@@ -22,7 +22,7 @@ sudo make install
 yes | sudo apt-get install g++-5-arm-linux-gnueabihf g++-aarch64-linux-gnu 
 
 # dependencies for building linux
-yes | sudo apt-get install libelf-dev 
+yes | sudo apt-get install libelf-dev build-essential libncurses-dev bison flex libssl-dev bc
 
 # dependencies for java program to extract gcc args
 sudo apt-get install openjdk-8-jre-headless
@@ -30,34 +30,6 @@ sudo apt-get install openjdk-8-jre-headless
 # allow user to add to /usr/local
 sudo chgrp -R vagrant /usr/local; sudo chmod -R g+w /usr/local
 
-# setup arm binutils for fiasco cross-compiling
-sudo ln -s $(which arm-linux-gnueabihf-g++-5) /usr/local/bin/arm-linux-g++
-sudo ln -s $(which arm-linux-gnueabihf-g++-5) /usr/local/bin/arm-linux-g++
-sudo ln -s $(which arm-linux-gnueabihf-gcc-5) /usr/local/bin/arm-linux-gcc
-sudo ln -s $(which arm-linux-gnueabihf-ld-5) /usr/local/bin/arm-linux-ld
-sudo ln -s $(which arm-linux-gnueabihf-ld) /usr/local/bin/arm-linux-ld
-sudo ln -s $(which arm-linux-gnueabihf-cpp-5) /usr/local/bin/arm-linux-cpp
-sudo ln -s $(which arm-linux-gnueabihf-nm) /usr/local/bin/arm-linux-nm
-sudo ln -s $(which arm-linux-gnueabihf-objcopy) /usr/local/bin/arm-linux-objcopy
-sudo ln -s $(which arm-linux-gnueabihf-objdump) /usr/local/bin/arm-linux-objdump
-sudo ln -s $(which arm-linux-gnueabihf-ar) /usr/local/bin/arm-linux-ar
-sudo ln -s $(which arm-linux-gnueabihf-strip) /usr/local/bin/arm-linux-strip
-
-# setup aarch64 binutils
-sudo ln -s $(which aarch64-linux-gnu-g++) /usr/local/bin/aarch64-linux-gnu-arm-linux-g++
-sudo ln -s $(which aarch64-linux-gnu-gcc) /usr/local/bin/aarch64-linux-gnu-arm-linux-gcc
-
-# setup mips binutils for fiasco cross-compiling
-sudo ln -s $(which mips-linux-gnu-g++) /usr/local/bin/mips-linux-g++
-sudo ln -s $(which mips-linux-gnu-g++) /usr/local/bin/mips-linux-g++
-sudo ln -s $(which mips-linux-gnu-gcc) /usr/local/bin/mips-linux-gcc
-sudo ln -s $(which mips-linux-gnu-ld) /usr/local/bin/mips-linux-ld
-sudo ln -s $(which mips-linux-gnu-ld) /usr/local/bin/mips-linux-ld
-sudo ln -s $(which mips-linux-gnu-cpp) /usr/local/bin/mips-linux-cpp
-sudo ln -s $(which mips-linux-gnu-nm) /usr/local/bin/mips-linux-nm
-sudo ln -s $(which mips-linux-gnu-objcopy) /usr/local/bin/mips-linux-objcopy
-sudo ln -s $(which mips-linux-gnu-ar) /usr/local/bin/mips-linux-ar
-sudo ln -s $(which mips-linux-gnu-strip) /usr/local/bin/mips-linux-strip
 
 # environment
 echo 'export KCONFIG_CASE_STUDIES=/vagrant' > /home/vagrant/.bash_profile
@@ -68,75 +40,6 @@ echo "export LC_ALL=en_US.UTF-8" >> /home/vagrant/.bash_profile
 # get source code and setup repos
 cd /home/vagrant
 
-if [ ! -d "axtls_2_1_4" ]; then
-    # source code
-    # wget -O axTLS-2.1.4.tar.gz 'https://downloads.sourceforge.net/project/axtls/2.1.4/axTLS-2.1.4.tar.gz?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Faxtls%2Ffiles%2Flatest%2Fdownload%3Fsource%3Dfiles&ts=1516744347'
-    if [ ! -d "axtls-code" ]; then
-        tar -xvf /vagrant/cases/axtls_2_1_4/axTLS-2.1.4.tar.gz
-    fi
-    mv axtls-code axtls_2_1_4
-fi
-
-if [ ! -d "toybox_0_7_5" ]; then
-    # git clone https://github.com/landley/toybox/
-    # wget http://www.landley.net/toybox/downloads/toybox-0.7.5.tar.gz
-    if [ ! -d "toybox-0.7.5" ]; then
-        tar -xvf /vagrant/cases/toybox_0_7_5/toybox-0.7.5.tar.gz
-    fi
-    mv toybox-0.7.5 toybox_0_7_5
-
-    cd toybox_0_7_5/
-    scripts/genconfig.sh
-    cd /home/vagrant
-fi
-
-if [ ! -d "busybox_1_28_0" ]; then
-    # https://git.busybox.net/busybox
-    # wget http://busybox.net/downloads/busybox-1.28.0.tar.bz2
-    if [ ! -d "busybox-1.28.0" ]; then
-        tar -xvf /vagrant/cases/busybox_1_28_0/busybox-1.28.0.tar.bz2
-    fi
-    mv busybox-1.28.0 busybox_1_28_0
-
-    cd busybox_1_28_0/
-    make allyesconfig
-    cd /home/vagrant
-fi
-
-if [ ! -d "fiasco_17_10" ]; then
-    if [ ! -d "fiasco-17.10" ]; then
-        tar -xvf /vagrant/cases/fiasco_17_10/fiasco-17.10.tar.bz2
-    fi
-    mv fiasco-17.10 fiasco_17_10
-
-    cd fiasco_17_10/src/kernel/fiasco    
-    tool/gen_kconfig src/Kconfig my_kconfig $(find src/ | grep Kconfig | grep -v src/Kconfig)
-    cd /home/vagrant
-fi
-
-if [ ! -d "uClibc-ng_1_0_29" ]; then
-    if [ ! -d "uClibc-ng-1.0.29" ]; then
-        tar -xvf /vagrant/cases/uClibc-ng_1_0_29/uClibc-ng-1.0.29.tar.xz
-    fi
-    mv uClibc-ng-1.0.29 uClibc-ng_1_0_29
-fi
-
-if [ ! -d "/home/vagrant/linux-headers" ]; then
-    tar -C /home/vagrant -xvf /usr/src/linux-source-4.4.0.tar.bz2
-    make -C /home/vagrant/linux-source-4.4.0 INSTALL_HDR_PATH=/home/vagrant/linux-headers headers_install
-fi
-
-if [ ! -d "buildroot_2018_02" ]; then
-    if [ ! -d "buildroot-2018.02" ]; then
-        tar -xvf /vagrant/cases/buildroot_2018_02/buildroot-2018.02.tar.gz
-    fi
-    mv buildroot-2018.02 buildroot_2018_02
-fi
-
-# Install infer
-VERSION=0.15.0
-curl -sSL "https://github.com/facebook/infer/releases/download/v$VERSION/infer-linux64-v$VERSION.tar.xz" | sudo tar -C /opt -xJ
-ln -s "/opt/infer-linux64-v$VERSION/bin/infer" /usr/local/bin/infer
 
 # Install clang
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
@@ -159,9 +62,9 @@ pyenv global 3.7.0
 
 # Copy README and license info
 cp /vagrant/.vagrant_resources/* ~
-
-# Compile GCCShunt
-cd /vagrant/scripts && javac GCCShunt.java
+sudo apt-get install python-pip python-dev build-essential
+sudo pip install kmaxtools
+echo 'export export PATH=$PATH:/usr/local/bin/' >> /home/vagrant/.bash_profile
 
 # Force vagrant to read ~/.bashrc
 echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
