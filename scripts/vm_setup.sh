@@ -33,6 +33,13 @@ echo 'export PATH=/usr/local/bin:$PATH' >> /home/vagrant/.bash_profile
 
 # get source code and setup repos
 cd /home/vagrant
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+cd linux-next
+git checkout next-20191211
+wget https://kmaxtools.opentheblackbox.net/formulas/kmax-formulas_linux-next-20191211.tar.bz2
+tar -xvf kmax-formulas_linux-next-20191211.tar.bz2
+cd /home/vagrant
+
 
 # Copy README and license info
 cp /vagrant/.vagrant_resources/* ~
