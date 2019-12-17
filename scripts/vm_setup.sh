@@ -9,8 +9,10 @@ yes | sudo apt-get install python python-pip python-dev build-essential make gcc
 
 # smack dependencies for toybox
 yes | sudo apt-get install autoconf libtool-bin
-yes | sudo apt-get install python python-pip python-setuptools python-dev build-essential
+yes | sudo apt-get install python python-pip python-setuptools python-dev build-essential python3-pip
 sudo pip install kmaxtools
+sudo pip3 install scipy
+
 
 # cross-compilation tools for fiasco
 
