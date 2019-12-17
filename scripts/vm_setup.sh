@@ -7,6 +7,8 @@ sudo apt-get update
 sudo apt-get update
 cd /home/vagrant
 sudo apt-get install -y git
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+ssh -T jo285317@github.com
 git clone git@github.com:appleseedlab/HCS_Optimizer
 
 
