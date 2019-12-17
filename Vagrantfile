@@ -3,7 +3,6 @@ Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
   config.vm.provision "shell", path: "scripts/vm_setup.sh", privileged: false
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "kconfig_case_studies"
     vb.memory = "8192"
   end
 end
