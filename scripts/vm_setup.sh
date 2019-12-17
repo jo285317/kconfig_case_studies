@@ -17,7 +17,7 @@ sudo pip3 install scipy
 # cross-compilation tools for fiasco
 
 # dependencies for building linux
-yes | sudo apt-get install libelf-dev build-essential libncurses-dev bison flex libssl-dev bc
+yes | sudo apt-get install libelf-dev build-essential libncurses-dev bison flex libssl-dev bc lzop
 
 # dependencies for java program to extract gcc args
 # sudo apt-get install openjdk-8-jre-headless
