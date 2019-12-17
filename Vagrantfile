@@ -4,6 +4,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "scripts/vm_setup.sh", privileged: false
   config.vm.provider "virtualbox" do |vb|
     vb.name = "kconfig_case_studies"
-    # vb.memory = "8192"
+    vb.memory = "8192"
   end
 end
