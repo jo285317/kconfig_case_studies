@@ -6,6 +6,7 @@ sudo apt-get update
 
 # dependencies for building axtls, toybox, fiasco
 yes | sudo apt-get install python python-pip python-dev build-essential make gcc libreadline-dev libselinux1-dev libssl-dev libncurses5-dev patch liblua50-dev libpam0g-dev libdmalloc-dev electric-fence libdlib-dev libaudit-dev linux-source-4.4.0 g++-mips-linux-gnu cbmc cppcheck default-jdk
+yes | sudo apt-get install libelf-dev build-essential libncurses-dev bison flex libssl-dev bc lzop
 
 # smack dependencies for toybox
 yes | sudo apt-get install autoconf libtool-bin
@@ -17,7 +18,6 @@ sudo pip3 install scipy
 # cross-compilation tools for fiasco
 
 # dependencies for building linux
-yes | sudo apt-get install libelf-dev build-essential libncurses-dev bison flex libssl-dev bc lzop
 
 # dependencies for java program to extract gcc args
 # sudo apt-get install openjdk-8-jre-headless
