@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
   config.vm.provision "shell", path: "scripts/vm_setup.sh", privileged: false
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "8192"
+    vb.memory = "65536"
     v.cpus = 32
   end
 end
